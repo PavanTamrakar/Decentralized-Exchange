@@ -25,7 +25,7 @@ contract Exchange is ERC20 {
        if(cryptoDevTokenReserve == 0) {
            cryptoDevToken.transferFrom(msg.sender, address(this), _amount);
            liquidity = ethBalance;
-        _mint(msg.sender, liquidity);
+           _mint(msg.sender, liquidity);
    } else {
         uint ethReserve =  ethBalance - msg.value;
         uint cryptoDevTokenAmount = (msg.value * cryptoDevTokenReserve)/(ethReserve);
@@ -36,6 +36,6 @@ contract Exchange is ERC20 {
         _mint(msg.sender, liquidity);
     }
      return liquidity;
-    
+         
       
 }
