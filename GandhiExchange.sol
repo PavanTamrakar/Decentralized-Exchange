@@ -66,6 +66,32 @@ contract Exchange is ERC20 {
         uint256 denominator = (inputReserve * 100) + inputAmountWithFee;
             return numerator / denominator;
     }
-         
-      
+    function ethTogandhiMoneyToken(uint _minTokens) public payable {
+        uint256 tokenReserve = getReserve();
+        uint256 tokensBought = getAmountOfTokens(
+            msg.value,
+            address(this).balance - msg.value,
+            tokenReserve
+    );
+
+        require(tokensBought >= _minTokens, "insufficient output amount");
+   
+        ERC20(gandhiMoneyTokenAddress).transfer(msg.sender, tokensBought);
+    }
+    function gandhiMoneyTokenToEth(uint _tokensSold, uint _minEth) public {
+        uint256 tokenReserve = getReserve();
+        uint256 ethBought = getAmountOfTokens(
+            _tokensSold,
+            tokenReserve,
+            address(this).balance
+        );
+        require(ethBought >= _minEth, "insufficient output amount");
+
+        ERC20(gandhiMoneyTokenAddress).transferFrom(
+            msg.sender,
+            address(this),
+            _tokensSold
+        );
+    
+        payable(msg.sender).transfer(ethBought);
 }
